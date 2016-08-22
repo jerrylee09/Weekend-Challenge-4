@@ -1,0 +1,16 @@
+h1 {
+  font-family: 'Taviraj', serif;
+  color: indigo;
+}
+
+h2 {
+  color: gray;
+}
+.green {
+	background-color: green;
+	padding: 1em;
+}
+.red {
+	background-color: red;
+	padding: 1em;
+}
