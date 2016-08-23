@@ -5,7 +5,7 @@ var connectionString = 'postgres://localhost:5432/do_to_list';
 
 router.post('/', function (req, res) {
   var list = req.body;
-  console.log('line 8 in terminal', req.body);
+  console.log('line 8 in server list', req.body);
 
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
@@ -30,19 +30,18 @@ router.post('/', function (req, res) {
 
 
 router.get('/', function (req, res) {
-  // Retrieve zoo from database
   pg.connect(connectionString, function (err, client, done) {
     if (err) {
       res.sendStatus(500);
     }
     client.query('SELECT * FROM list', function (err, result) {
-      done(); // closes connection, I only have 10!
+      done();
 
       if (err) {
         res.sendStatus(500);
       }
       res.send(result.rows);
-      console.log('line 45 in terminal', result.rows);
+      console.log(result.rows);
     });
   });
 });
@@ -69,32 +68,32 @@ router.get('/:status', function (req, res) {
 });
 
 
-// router.put('/:id', function (req, res) {
-//   var id = req.params.id;
-//   var list = req.body;
+router.put('/:id', function (req, res) {
+  var id = req.params.id;
+  var list = req.body;
 
-//   pg.connect(connectionString, function (err, client, done) {
-//     if (err) {
-//       res.sendStatus(500);
-//     }
+  pg.connect(connectionString, function (err, client, done) {
+    if (err) {
+      res.sendStatus(500);
+    }
 
-//     client.query('UPDATE list ' +
-//                   'SET to_do_list = $1, ' +
-//                   'status = $2 ' +
-//                   'WHERE id = $3',
-//                 [list.to_do_list, list.status, id],
-//               function (err, result) {
-//                 done();
+    client.query('UPDATE list ' +
+                  'SET to_do_list = $1, ' +
+                  'status = $2 ' +
+                  'WHERE id = $3',
+                [list.to_do_list, list.status, id],
+              function (err, result) {
+                done();
 
-//                 if (err) {
-//                   console.log('err line 92', err);
-//                   res.sendStatus(500);
-//                 } else {
-//                   res.sendStatus(200);
-//                 }
-//               });
-//   });
-// });
+                if (err) {
+                  console.log('err line 92', err);
+                  res.sendStatus(500);
+                } else {
+                  res.sendStatus(200);
+                }
+              });
+  });
+});
 
 
 router.delete('/:id', function (req, res) {
