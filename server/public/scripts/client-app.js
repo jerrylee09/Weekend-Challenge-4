@@ -1,14 +1,15 @@
 $(document).ready(function() {
 	// append post!
   $('#add_button').on('click', postlist);
-  $('#list-form').on('click', '.update', putList);
-  $('#list-form').on('click', '.delete', deletelist);
+  $('.container').on('click', '.update', putList);
+  $('.container').on('click', '.delete', deletelist);
+
+  getList();
 
 });
 
-getList();
 
-function postlist() {
+function postlist(event) {
   event.preventDefault();
 
   var list = {};
@@ -26,6 +27,7 @@ function postlist() {
       success: function () {
           console.log('POST /lists works!');
           $('.list-input').empty();
+          
            getList();
         },
 
@@ -77,14 +79,13 @@ function getList(statuscomplete) {
 
 
 function putList() {
-
   var list = {}
   var inputs = $(this).parent().children().serializeArray();
   $.each(inputs, function(i, field){
     list[field.name] = field.value;
   });
   console.log('the listing inputting!!', list);
-  var listid = $(this).parent().data('listId');
+  var listId = $(this).parent().data('listId');
   $.ajax({
     type: 'PUT', 
     url: '/list/' + listId,
@@ -103,7 +104,7 @@ function putList() {
 
 function deletelist() {
   var listId = $(this).parent().data('listId');
-console.log('delete has been click');
+  console.log('delete has been click');
   $.ajax({
     type: 'DELETE',
     url: '/list/' + listId,
@@ -117,26 +118,5 @@ console.log('delete has been click');
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
